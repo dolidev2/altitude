@@ -183,7 +183,38 @@ include_once "Reinscription.php";
 
         return $donne;
     }
-    
+
+
+     public static function UpdateDorr()
+     {
+         $con = parent::getPDO();
+         $sql = "SELECT id_reinscription, createdAt, duree FROM reinscription"; // Remplacez par le nom de votre table
+         $result = $con->query($sql);
+         $result = $result->fetchAll(PDO::FETCH_CLASS, 'Reinscription');
+
+         // Traitement des données
+         if (count($result) > 0) {
+             foreach ($result as $row) {
+                 $id = $row->id_reinscription;
+                 $createdAt = $row->createdAt;
+                 $duree = $row->duree;
+
+                 // Ajouter la durée (en mois) au champ createdAt
+                 $newDorr = date('Y-m-d', strtotime("+$duree months", strtotime($createdAt)));
+
+                 // Mettre à jour la valeur de 'dorr'
+                 $updateSql = $con->prepare('UPDATE reinscription SET dorr=? WHERE id_reinscription=?');
+                 if ($updateSql->execute(array($newDorr, $id)) == true) {
+                     echo "Enregistrement ID $id mis à jour avec succès. Nouvelle date : $newDorr<br>";
+                 } else {
+                     echo "Erreur de mise à jour pour l'ID $id : " . $con->error . "<br>";
+                 }
+             }
+         } else {
+             echo "Aucune donnée trouvée dans la table.<br>";
+         }
+     }
+
     public static  function DelaiExpire($duree,$date)
     {
 
@@ -216,7 +247,6 @@ include_once "Reinscription.php";
      {
          $data_eleve=[];
          foreach ($eleves as $eleve){
-            //Eleve::permisProvisoire($eleve->id_eleve);
             if( self::DelaiExpire(8,$eleve->dor) == false )
             {
                 $item = array(
@@ -236,22 +266,24 @@ include_once "Reinscription.php";
             }
             else{
                 $eleve_register = Reinscription::afficheOne($eleve->id_eleve);
-            if(!empty($eleve_register[0]->id_reinscription) &&  self::DelaiExpire($eleve_register[0]->duree,$eleve_register[0]->dorr) == false ){
-                $item = array(
-                    'id_eleve' => $eleve->id_eleve,
-                    'matricule' => $eleve->matricule,
-                    'nom' => $eleve->nom,
-                    'prenom' => $eleve->prenom,
-                    'contact' => $eleve->contact,
-                    'profession' => $eleve->profession,
-                    'dob' => $eleve->dob,
-                    'pob' => $eleve->pob,
-                    'categorie' => $eleve->categorie,
-                    'agence' => $eleve->nom_agence,
-                    'id'=> $eleve->id_eleve
-                );
-                array_push($data_eleve,$item);
-            }
+
+                if(!empty($eleve_register[0]->id_reinscription) &&  self::DelaiExpire($eleve_register[0]->duree,$eleve_register[0]->dorr) == false  ){
+                    $item = array(
+                        'id_eleve' => $eleve->id_eleve,
+                        'matricule' => $eleve->matricule,
+                        'nom' => $eleve->nom,
+                        'prenom' => $eleve->prenom,
+                        'contact' => $eleve->contact,
+                        'profession' => $eleve->profession,
+                        'dob' => $eleve->dob,
+                        'pob' => $eleve->pob,
+                        'categorie' => $eleve->categorie,
+                        'agence' => $eleve->nom_agence,
+                        'id'=> $eleve->id_eleve
+                    );
+
+                    array_push($data_eleve,$item);
+                }
             }
          }
           return $data_eleve;
@@ -262,40 +294,40 @@ include_once "Reinscription.php";
          $con = parent::getPDO();
          $data_eleve=[];
          foreach ($eleves as $eleve){
-             if( self::DelaiExpire(8,$eleve->dor) == true )
+             $eleve_register = Reinscription::afficheOne($eleve->id_eleve);
+             if(!empty($eleve_register[0]->id_reinscription) &&  self::DelaiExpire($eleve_register[0]->duree,$eleve_register[0]->dorr) == true)
              {
-                 $eleve_register = Reinscription::afficheOne($eleve->id_eleve);
-                 if(! isset($eleve_register[0]->id_reinscription) ){
-                     $item = array(
-                         'id_eleve' => $eleve->id_eleve,
-                         'matricule' => $eleve->matricule,
-                         'nom' => $eleve->nom,
-                         'prenom' => $eleve->prenom,
-                         'contact' => $eleve->contact,
-                         'dob' => $eleve->dob,
-                         'pob' => $eleve->pob,
-                         'profession' => $eleve->profession,
-                         'categorie' => $eleve->categorie,
-                         'agence' => $eleve->nom_agence,
-                     );
-                     array_push($data_eleve,$item);
-                 }
+                 $item = array(
+                     'id_eleve' => $eleve->id_eleve,
+                     'matricule' => $eleve->matricule,
+                     'nom' => $eleve->nom,
+                     'prenom' => $eleve->prenom,
+                     'contact' => $eleve->contact,
+                     'profession' => $eleve->profession,
+                     'dob' => $eleve->dob,
+                     'pob' => $eleve->pob,
+                     'categorie' => $eleve->categorie,
+                     'agence' => $eleve->nom_agence,
+                     'id'=> $eleve->id_eleve
+                 );
+                 array_push($data_eleve,$item);
+
+
              }
-             else{
-                 $eleve_register = Reinscription::afficheOne($eleve->id_eleve);
-                 if(!empty($eleve_register[0]->id_reinscription) &&  self::DelaiExpire($eleve_register[0]->duree,$eleve_register[0]->dorr) == false ){
-                     $item = array(
-                         'id_eleve' => $eleve->id_eleve,
-                         'matricule' => $eleve->matricule,
-                         'nom' => $eleve->nom,
-                         'prenom' => $eleve->prenom,
-                         'contact' => $eleve->contact,
-                         'profession' => $eleve->profession,
-                         'categorie' => $eleve->categorie,
-                         'agence' => $eleve->agence,
-                     );
-                     array_push($data_eleve,$item);
-                 }
+             elseif(self::DelaiExpire(8,$eleve->dor) == true ){
+                 $item = array(
+                     'id_eleve' => $eleve->id_eleve,
+                     'matricule' => $eleve->matricule,
+                     'nom' => $eleve->nom,
+                     'prenom' => $eleve->prenom,
+                     'contact' => $eleve->contact,
+                     'dob' => $eleve->dob,
+                     'pob' => $eleve->pob,
+                     'profession' => $eleve->profession,
+                     'categorie' => $eleve->categorie,
+                     'agence' => $eleve->nom_agence,
+                 );
+                 array_push($data_eleve,$item);
              }
          }
          return $data_eleve;

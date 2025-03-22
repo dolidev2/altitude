@@ -18,12 +18,12 @@
      */
     public static $data = array(
             'DB_HOST'=> 'localhost',
-            'DB_NAME'=> 'noblesse',
+            'DB_NAME'=> 'nob',
             'DB_USER'=> 'jean',
             'DB_PASSWORD'=>'',
             'DB_PORT'=>'',
             'DB_PREFIX'=>'',
-            'DB_DSN'=> 'mysql:host=localhost;dbname=noblesse'
+            'DB_DSN'=> 'mysql:host=localhost;dbname=auto_ecole_noblesse'
                         );
     public static $pdo;
 

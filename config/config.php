@@ -6,10 +6,10 @@
  */
 
 $config = array(
-    'NOM' => 'Noblesse Auto Ecole',
-    'NUMERO' => '+(226) 78-31-56-96',
+    'NOM' => 'Altitude Auto et Moto Ecole',
+    'NUMERO' => '+(226) 05-06-07-08',
     'EMAIL' => '',
-    'LOCATION' => '09 BP 51 OUAGA 09',
+    'LOCATION' => '01 BP 1874 OUAGA 01',
     'ADRESSE' => '',    
     'DUREE' => 8,    
     'CODE' => 'code',    

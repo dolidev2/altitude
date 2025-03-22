@@ -19,7 +19,7 @@ $dompdf->set_option('isHtml5ParserEnabled', true);
 ob_start();
 ?>
     <div class="container">
-        <img  src="head.png" width="100 %" >
+        <img  src="head.jpg" width="100 %" >
         <h2 class="title1">Versement mensuelle <?= utf8_encode(strftime('%B', strtotime($date)))   ?></h2>
         <table class="table">
             <thead class="title">
@@ -63,8 +63,18 @@ ob_start();
                 <p class="sign">Le Directeur</p>
             </div>
         </div>
+		<div class="footer">
+			<img  src="foot.jpg" width="100 %" >
+		</div>
     </div>
     <style>
+		.footer {
+			width: 100%;
+			text-align: center;
+			position: fixed;
+			height: 50px;
+			bottom: 0px;
+		}
         .sign{
             text-decoration: underline;
             text-align: right;

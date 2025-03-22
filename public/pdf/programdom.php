@@ -35,7 +35,7 @@ ob_start();
         <link rel="shortcut icon" type="image/x-icon" href="../particles/logo.PNG">
     </head>
     <div class="container">
-        <img  src="head.PNG" width="100 %" >
+        <img  src="head.jpg" width="100 %" >
         <h2 class="title1">Liste des candidat(e)s  à l'examen de <?= $Examens[0]->type ?></h2>
         <p><?php if ($_GET['vehicule']) echo 'N°: '.$_GET['vehicule']; else echo ""; ?></p>
         <?php
@@ -74,12 +74,19 @@ ob_start();
         <div>
             <p><span class="singe">Examinateur du jour</span> <span class="sign">Le Directeur</span></p>
         </div>
-        <div>
-            <p class="footer">L'éclaireur du routier</p>
-        </div>
+		<div class="footer">
+			<img  src="foot.jpg" width="100 %" >
+		</div>
     </div>
 
     <style>
+		.footer {
+			width: 100%;
+			text-align: center;
+			position: fixed;
+			height: 50px;
+			bottom: 0px;
+		}
         .title{
             text-align: center;
             font-weight:bold;

@@ -11,8 +11,10 @@
             <ul class="nav nav-tabs">                
                 <li class="active"><a href="#liste" data-toggle="tab"><h4>Entrées & Sorties</h4></a>
                 </li>
+				<?php if($_SESSION['fonction'] == 'administrateur' || $_SESSION['fonction'] == 'manager'): ?>
                 <li><a href="#recette" data-toggle="tab"><h4>Clôturer</h4></a>
                 </li>
+				<?php endif; ?>
                 <li><a href="#compte" data-toggle="tab"><h4>Versement</h4></a>
                 </li>
                 <li><a href="#fond" data-toggle="tab"><h4>Fond de caisse</h4></a>
@@ -189,14 +191,14 @@
                                             <td><?=$vs->mode; ?></td>
                                             <td><?=date('d/m/Y',strtotime($vs->date)); ?></td>
                                             <td class="center">
-                                                <?php if ($_SESSION['fonction'] == 'administrateur') {  ?>
+                                                <?php if ($_SESSION['fonction'] == 'administrateur' || $_SESSION['fonction'] == 'manager'): ?>
                                                 <a title="Modifier" class="btn btn-primary" href="index.php?page=de_versement&id_versement=<?= $vs->id_ver ?>">
                                                     <span class="fa fa-pencil"></span>
                                                 </a>
                                                     <button title="Supprimer" type="button" class="btn btn-danger" data-toggle="modal" data-target="<?='#modal_ver'.$i?>">
                                                         <span class="fa fa-trash"></span>
                                                     </button>
-                                                <?php } ?>
+                                                <?php endif; ?>
                                                 <!-- Modal -->
                                                 <div class="modal fade" id="<?='modal_ver'.$i;?>" tabindex="-1" role="dialog" aria-labelledby="<?='#modal_ver'.$i;?>" aria-hidden="true">
                                                     <div class="modal-dialog modal-dialog-centered" role="document">

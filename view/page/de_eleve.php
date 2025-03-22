@@ -177,12 +177,12 @@
 		        <td align="center"><u><b><?=$paie->type?></b></u></td>
 		        <td>
                     <?php
-                        if($_SESSION['fonction'] == 'administrateur'){
+                        if($_SESSION['fonction'] == 'administrateur' || $_SESSION['fonction'] == 'manager'):
                     ?>
 		        	<span data-toggle="modal" data-target="<?='#mod'.$i;?>" title="Modifier" class="btn btn-primary">
 		        		<i class="fa fa-pencil"></i>
 		        	</span>
-                    <?php  } ?>
+                    <?php  endif; ?>
 		        	<!-- Modal -->
                     <div class="modal fade" id="<?='mod'.$i;?>" tabindex="-1" role="dialog" aria-labelledby="<?='#mod'.$i;?>" aria-hidden="true">
                       <div class="modal-dialog modal-dialog-centered" role="document">
@@ -225,11 +225,11 @@
                     </div>
 
                     <!-- Modal must dynam and script --> 
-                    <?php if ($_SESSION['fonction'] == 'administrateur') {  ?>                   
+                    <?php if ($_SESSION['fonction'] == 'administrateur' || $_SESSION['fonction'] == 'manager'):  ?>
                     <button data-toggle="modal" data-target="<?='#sup'.$i;?>" class="btn btn-danger" title="Supprimer">
                     	<i class="fa fa-trash"></i>                    	
                     </button>
-                    <?php } ?>
+                    <?php endif; ?>
 
                     <!-- Modal -->
                     <div class="modal fade" id="<?='sup'.$i;?>" tabindex="-1" role="dialog" aria-labelledby="<?='#sup'.$i;?>" aria-hidden="true">

@@ -12,7 +12,7 @@ $elev = Eleve::afficherCoursExpire($reds);
     <div class="panel-body" style="overflow: scroll;height: 700px;">
         <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
             <div class="panel-header">
-                <h4>Liste de Tous les Elèves Programmés à cet Examen</h4>
+                <h4>Liste de Tous les élèves programmés à cet examen</h4>
                 <div class="row">
                     <!-- <div class="col-lg-3">
                         <form method="post" action="../control/upload_csv.php" enctype="multipart/form-data">
@@ -240,7 +240,7 @@ $elev = Eleve::afficherCoursExpire($reds);
 </div>
 <script>
     $(document).ready(function () {
-        
+		var fonction = <?php echo json_encode($_SESSION['fonction']); ?>;
         //Get id on focus
         var data=[];
         $(document).on('focusout', '.check', function(){
@@ -253,6 +253,18 @@ $elev = Eleve::afficherCoursExpire($reds);
         var dataTables = $('#tables-examen').DataTable({
             "responsive":true,
             "paging":true,
+			language: {
+				url: '../public/vendor/datatables/js/language.json',
+				"paginate": {
+					"previous": "<",
+					"next": ">",
+					"first": "",
+					"last": ""
+				}
+			},
+			"info":( fonction === 'administrateur') ? true : false, // Désactive l'affichage du nombre d'éléments
+			"lengthChange": ( fonction === 'administrateur') ? true : false, // Désactive la pagination
+			"pageLength":  10 // Définit le nombre d'éléments par page
 
         });
 

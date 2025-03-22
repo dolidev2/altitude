@@ -11,7 +11,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Noblesse Auto Ecole</title>
+    <title>Altitude Auto Ecole</title>
     <!--Favicon-->
     <link rel="shortcut icon" type="image/x-icon" href="../public/particles/favicon.png">
 
@@ -168,10 +168,6 @@
         case 'ajax':
                 require_once '../model/Ajax/eleve/tableEleveReinscrire.php';
                 break;
-    
-
-            
-
         default:
             require_once 'page/accueil.php';
             break;
@@ -269,17 +265,16 @@
                                 <i class="fa fa-money fa-fw"></i> Caisse</a>
 
                         </li>
-                        <li>
+						<?php if ($_SESSION['fonction'] == 'administrateur' || $_SESSION['fonction'] == 'manager'):  ?>
+							<li>
                             <a href="index.php?page=historique">
                                 <i class="fa fa-files-o fa-fw"></i> Historique</a>
-                        </li>
-                    <?php if ($_SESSION['fonction'] == 'administrateur') {  ?>
+                        	</li>
                             <li>
                                 <a href="index.php?page=utilisateur">
                                     <i class="fa fa-sitemap fa-fw"></i> Utilisateur</a>
                             </li>
-
-                    <?php }  ?>
+                    <?php endif; ?>
                     </ul>
                 </div>
                 <!-- /.sidebar-collapse -->

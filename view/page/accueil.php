@@ -1,5 +1,6 @@
 <?php include_once '../model/Eleve.class.php' ; ?>
 <div class="row">
+	<?php if($_SESSION['fonction'] == 'administrateur' || $_SESSION['fonction'] == 'manager'): ?>
     <div class="col-lg-3 col-md-6">
         <div class="panel panel-primary">
             <div class="panel-heading">
@@ -7,7 +8,7 @@
                     <div class="col-xs-3">
                         <i class="fa fa-group fa-5x"></i>
                     </div>
-                    <?php 
+                    <?php
                         $all = Eleve::countAll();
                         $cours = Eleve::countCours();
                         $permi = Eleve::countPermi();
@@ -49,6 +50,7 @@
             </a>
         </div>
     </div>
+	<?php endif; ?>
     <div class="col-lg-3 col-md-6">
         <div class="panel panel-yellow">
             <div class="panel-heading">

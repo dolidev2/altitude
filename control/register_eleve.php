@@ -16,7 +16,7 @@ if(!empty($_POST['duree']))
 
     //Update dor and solde of student
     $eleveData = Eleve::afficherOne($eleve);
-    $dateReinscrire = $eleveData[0]->dor;
+    $dateReinscrire =date('Y-m-d', strtotime("+$duree months", strtotime(date('Y-m-d'))));;
    // $tmp_duree = $config['DUREE'] -$duree;
     $som =  $eleveData[0]->solde +  $solde;
     $dor_update = date_create(date("Y-m-d"));

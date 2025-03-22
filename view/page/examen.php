@@ -16,6 +16,7 @@ if(isset($_GET['agence']))
 }
 $elev = Eleve::afficherCoursExpire($reds);
 ?>
+<?php if($_SESSION['fonction'] == 'administrateur' || $_SESSION['fonction'] == 'manager'): ?>
 <div class="row">
     <div class="col-lg-1">
         <label for="Agence">Agence</label> 
@@ -36,6 +37,7 @@ $elev = Eleve::afficherCoursExpire($reds);
         <label><?= $agenc ?></label> 
     </div>
 </div>
+<?php endif; ?>
 <br>
 <div class="row">
     <div class="panel panel-default">
@@ -488,7 +490,7 @@ $elev = Eleve::afficherCoursExpire($reds);
                 <div class="tab-pane fade" id="liste_attente">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            Elève en attente pour examen                            
+                            Elèves en attente pour examen
                         </div>
                         <div class="panel-body">
                         <div style="text-align:center;"> 
@@ -504,7 +506,6 @@ $elev = Eleve::afficherCoursExpire($reds);
                                         <th>Catégorie</th>
                                         <th>Agence</th>
                                         <th></th>                                       
-                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -519,9 +520,6 @@ $elev = Eleve::afficherCoursExpire($reds);
                                             <td><?= $ev['categorie'] ?></td>
                                             <td><?= $ev['agence'] ?></td>
                                             <td><input type="checkbox" class="form-group check"	id="<?= $ev['id_eleve'] ?>"></td>
-                                            <td>
-                                                <button title="Modifier" type="button" name="update" id="<?= $ev['id_eleve'] ?>" class="btn btn-primary btn-sm detail_eleve "><i class="glyphicon glyphicon-pencil"></i></button>
-                                            </td>
                                         </tr>
                                 <?php
                                     }
@@ -837,11 +835,23 @@ $elev = Eleve::afficherCoursExpire($reds);
 <script type="text/javascript">
 
     $(document).ready(function () {
-
+		var fonction = <?php echo json_encode($_SESSION['fonction']); ?>;
 
         var dataTables = $('#tables-examen').DataTable({
             "responsive":true,
             "paging":true,
+			language: {
+				url: '../public/vendor/datatables/js/language.json',
+				"paginate": {
+					"previous": "<",
+					"next": ">",
+					"first": "",
+					"last": ""
+				}
+			},
+			"info":( fonction === 'administrateur') ? true : false, // Désactive l'affichage du nombre d'éléments
+			"lengthChange": ( fonction === 'administrateur') ? true : false, // Désactive la pagination
+			"pageLength": ( fonction === 'administrateur') ? 10 : 50, // Définit le nombre d'éléments par page
         });
 
         var table_exam_codes = $('#table-exam-codes').DataTable({

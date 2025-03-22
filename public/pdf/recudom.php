@@ -18,7 +18,7 @@ ob_start();
 ?>
 
     <div class="container">
-        <img  src="head.png" width="100 %" >
+        <img  src="head.jpg" width="100 %" >
         <h2 class="title1">Reçu de Paiement de :  <?= $recu[0]->type ?></h2>
         <p>Reçu de : <?= $recu[0]->nom.' '.$recu[0]->prenom ?> <span class="center">Solde: <?=$eleve[0]->solde ?></span> <span class="right">Catégorie : <?= $recu[0]->categorie ?></span></p>
         <p>N° Reçu : <?= $recu[0]->numero ?> <span class="right">Réliquat :  <?= $_GET['r']?></span></p>

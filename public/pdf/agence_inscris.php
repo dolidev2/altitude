@@ -31,7 +31,7 @@ asort($data);
 ob_start();
 ?>
     <div class="container">
-        <img  src="head.png" width="100 %" >
+        <img  src="head.jpg" width="100 %" >
         <h2 class="title1">Fiche récapitulatif des inscris <?= $agence ?></h2>
         <br>
         <p class="dt">Période: du <?= date("d/m/Y",strtotime($_GET['debut'])) ?> au <?= date("d/m/Y",strtotime($_GET['fin'])) ?></p>
@@ -66,11 +66,19 @@ ob_start();
                 <p class="sign">Le Directeur</p>
             </div>
         </div>
-
+		<div class="footer">
+			<img  src="foot.jpg" width="100 %" >
+		</div>
     </div>
 
-
     <style>
+		.footer {
+			width: 100%;
+			text-align: center;
+			position: fixed;
+			height: 50px;
+			bottom: 0px;
+		}
         .title{
             text-align: center;
             font-weight:bold;

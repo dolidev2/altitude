@@ -6,11 +6,12 @@ $agences = Agence::afficherAgence();
 $agenc = '';
 $agenceId = '';
 if(isset($_GET['agence'])){
-    $ag = Agence::afficherAgenceOne($_GET['agence']); 
+    $ag = Agence::afficherAgenceOne($_GET['agence']);
     $agenc = $ag[0]->nom_agence;
     $agenceId =$_GET['agence'];
-//    $eleves = Eleve::afficherCoursAgence($_GET['agence']); $i=1;
-    $elevePermis = Eleve::afficherStatutAgence($_GET['agence']); $i=1; 
+    $eleves = Eleve::afficherCoursAgence($_GET['agence']);
+
+    $elevePermis = Eleve::afficherStatutAgence($_GET['agence']); $i=1;
     $depotUrl = "index.php?page=bordereau&agence=".$_GET['agence']."&date_depot=";
     $urlListeSimple = '../public/pdf/elevedom.php?ind=cours&agence='.$_GET['agence'];
     $urlListeSolde= '../public/pdf/paiementdom.php?ind=solde&agence='.$_GET['agence'];
@@ -36,6 +37,9 @@ $elevR = Eleve::afficherCoursExpireReinscription($eleves);
 
 ?>
 <div class="row">
+<?php
+    if($_SESSION['fonction'] == 'administrateur' || $_SESSION['fonction'] == 'manager'):
+?>
     <form action="../control/agence_inscris_periode.php" method="POST">
         <div class="col-lg-1">
             <label for="Agence">Agence</label> 
@@ -76,6 +80,10 @@ $elevR = Eleve::afficherCoursExpireReinscription($eleves);
             </div>
         </div>
     </form>
+
+	<?php
+	endif;
+?>
 </div>
 <br>
 <div class="row">
@@ -90,7 +98,7 @@ $elevR = Eleve::afficherCoursExpireReinscription($eleves);
                 </li>
                 <li><a href="#listedepot" data-toggle="tab"><h4>Dépôt</h4></a>
                 </li>
-                <?php if($_SESSION['fonction'] == "administrateur"): ?>
+                <?php if($_SESSION['fonction'] == "administrateur" || $_SESSION['fonction'] == "manager"): ?>
                     <li><a href="#inscription" data-toggle="tab"><h4>Réinscription</h4></a></li>
                 <?php  endif; ?>
             </ul>
@@ -99,7 +107,7 @@ $elevR = Eleve::afficherCoursExpireReinscription($eleves);
                 <div class="tab-pane fade" id="ajouter">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            Ajouter un nouvel Elève
+                            Ajouter un nouvel élève
                         </div>
                         <div class="panel-body">
                             <form role="form" id="formulaire_save">
@@ -203,7 +211,8 @@ $elevR = Eleve::afficherCoursExpireReinscription($eleves);
                 <div class="tab-pane fade in active" id="liste">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            Tous les Élève en Cours
+                            Tous les élèves en cours
+							<?php if($_SESSION['fonction'] == 'administrateur' || $_SESSION['fonction'] == 'manager'): ?>
                             <a href="<?= $urlListeSimple ?>" target="_blank" class="btn btn-primary">Imprimer Liste Simple</a>
                             <a href="<?= $urlListeSolde ?>" target="_blank" class="btn btn-success">Scolarité Soldés</a>
                             <a href="<?= $urlListeRedevable ?>" target="_blank" class="btn btn-warning">Scolarité Redevables</a>
@@ -211,6 +220,7 @@ $elevR = Eleve::afficherCoursExpireReinscription($eleves);
                             <button title="Impression" type="button" class="btn btn-info" data-toggle="modal" data-target="#print_agence">
                                 <span class="fa fa-file-pdf-o"></span>
                             </button>
+							<?php endif; ?>
                         </div>
 
                         <div class="panel-body">
@@ -311,14 +321,15 @@ $elevR = Eleve::afficherCoursExpireReinscription($eleves);
                                                 <input type="checkbox" class="form-group check"	id="<?= $ev['id_eleve'] ?>" >
                                             </td>
                                             <td>
+										<?php if($_SESSION['fonction'] == 'administrateur' || $_SESSION['fonction'] == 'manager'): ?>
                                                 <button title="Supprimer" type="button" name="delete" id="<?= $ev['id_eleve'] ?>" class="btn btn-danger btn-sm delete_eleve " ><i class="glyphicon glyphicon glyphicon-trash"></i></button>
                                                 <button title="Modifier" type="button" name="update" id="<?= $ev['id_eleve'] ?>" class="btn btn-primary btn-sm update_eleve "><i class="glyphicon glyphicon-pencil"></i></button>
-                                                <button type="button" title="Examen"  name="examen" id="'<?= $ev['id_eleve'] ?>" class="btn btn-success examen_eleve "><i class="glyphicon glyphicon-ok"></i></button>
+                                            <?php endif; ?>
+												<button type="button" title="Examen"  name="examen" id="'<?= $ev['id_eleve'] ?>" class="btn btn-success examen_eleve "><i class="glyphicon glyphicon-ok"></i></button>
                                                 <button type="button" title="Paiement"  name="paiement" id="<?= $ev['id_eleve'] ?>" class="btn btn-warning paiement_eleve "><i class="glyphicon glyphicon-th-large"></i></button>
                                                 <button type="button" title="Voir plus" name="voir_plus" id="<?= $ev['id_eleve'] ?>" class="btn btn-info detail_eleve "><i class="glyphicon glyphicon-eye-open"></i></button>
                                             </td>
                                         </tr>
-
                                 <?php
                                     }
                                 ?>
@@ -331,7 +342,7 @@ $elevR = Eleve::afficherCoursExpireReinscription($eleves);
                 <div class="tab-pane fade" id="listeP">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            Les Elèves qui ont Obtenu le Permis Provisoire
+                            Les élèves qui ont obtenu le permis provisoire
                             <a href="../public/pdf/elevedom.php?ind=permis" target="_blank" class="btn btn-warning">Imprimer</a>
                         </div>
                         <div class="panel-body">
@@ -359,9 +370,11 @@ $elevR = Eleve::afficherCoursExpireReinscription($eleves);
                                         <td><?= $ev->categorie ?></td>
                                         <td><?= $ev->nom_agence ?></td>
                                         <td>
+										<?php if($_SESSION['fonction'] == 'administrateur' || $_SESSION['fonction'] == 'manager'): ?>
                                             <button title="Supprimer" type="button" name="delete" id="<?= $ev->id_eleve ?>" class="btn btn-danger btn-sm delete_eleve " ><i class="glyphicon glyphicon glyphicon-trash"></i></button>
                                             <button title="Modifier" type="button" name="update" id="<?= $ev->id_eleve ?>" class="btn btn-primary btn-sm update_eleve "><i class="glyphicon glyphicon-pencil"></i></button>
-                                            <button type="button" title="Reinscrire"  name="examen" id="<?= $ev->id_eleve ?>" class="btn btn-success inscription_eleve "><i class="glyphicon glyphicon-ok"></i></button>
+                                        <?php endif; ?>
+											<button type="button" title="Reinscrire"  name="examen" id="<?= $ev->id_eleve ?>" class="btn btn-success inscription_eleve "><i class="glyphicon glyphicon-ok"></i></button>
                                             <button type="button" title="Paiement"  name="paiement" id="<?= $ev->id_eleve ?>" class="btn btn-warning paiement_eleve "><i class="glyphicon glyphicon-th-large"></i></button>
                                             <button type="button" title="Voir plus" name="voir_plus" id="<?= $ev->id_eleve ?>" class="btn btn-info detail_eleve "><i class="glyphicon glyphicon-eye-open"></i></button>
                                         </td>
@@ -408,9 +421,11 @@ $elevR = Eleve::afficherCoursExpireReinscription($eleves);
                                             <a title="Détail" class="btn btn-primary" href="index.php?page=bordereau&bordereau=<?= $dt->id_bordereau ?>">
                                               <span class="fa fa-table"></span>
                                             </a>
+											<?php if($_SESSION['fonction'] == 'administrateur' || $_SESSION['fonction'] == 'manager'): ?>
                                             <button title="Supprimer" type="button" class="btn btn-danger" data-toggle="modal" data-target="<?='#depot'.$i;?>">
                                                 <span class="fa fa-trash"></span>
                                             </button>
+											<?php endif; ?>
                                             <!-- Modal -->
                                             <div class="modal fade" id="<?='depot'.$i;?>" tabindex="-1" role="dialog" aria-labelledby="<?='#depot'.$i;?>" aria-hidden="true">
                                               <div class="modal-dialog modal-dialog-centered" role="document">
@@ -544,29 +559,77 @@ $elevR = Eleve::afficherCoursExpireReinscription($eleves);
 
 <script type="text/javascript">
 
-
-
     $(document).ready(function () {
+		var fonction = <?php echo json_encode($_SESSION['fonction']); ?>;
 
         var dataTable = $('#course_table').DataTable({
             "responsive":true,
             "paging":true,
+			language: {
+				url: '../public/vendor/datatables/js/language.json',
+				"paginate": {
+					"previous": "<",
+					"next": ">",
+					"first": "",
+					"last": ""
+				}
+			},
+			"info":( fonction === 'administrateur') ? true : false, // Désactive l'affichage du nombre d'éléments
+			"lengthChange": ( fonction === 'administrateur') ? true : false, // Désactive la pagination
+			"pageLength": ( fonction === 'administrateur') ? 10 : 50, // Définit le nombre d'éléments par page
         });
 
         var dataTable_provisoire = $('#table_provisoire').DataTable({
             "responsive":true,
             "paging":true,
+			language: {
+				url: '../public/vendor/datatables/js/language.json',
+				"paginate": {
+					"previous": "<",
+					"next": ">",
+					"first": "",
+					"last": ""
+				}
+			},
+			"info":( fonction === 'administrateur') ? true : false, // Désactive l'affichage du nombre d'éléments
+			"lengthChange": ( fonction === 'administrateur') ? true : false, // Désactive la pagination
+			"pageLength": ( fonction === 'administrateur') ? 10 : 50, // Définit le nombre d'éléments par page
         });
 
         var table_depot = $('#table-depot').DataTable({
             "responsive":true,
             "paging":true,
-            order: [[1, 'desc']]
+            order: [[1, 'desc']],
+			language: {
+				url: '../public/vendor/datatables/js/language.json',
+				"paginate": {
+					"previous": "<",
+					"next": ">",
+					"first": "",
+					"last": ""
+				}
+			},
+			"info":( fonction === 'administrateur') ? true : false, // Désactive l'affichage du nombre d'éléments
+			"lengthChange": ( fonction === 'administrateur') ? true : false, // Désactive la pagination
+			"pageLength": ( fonction === 'administrateur') ? 10 : 50, // Définit le nombre d'éléments par page
+
         });
 
         var dataTables = $('#tables-reinscrire').DataTable({
             "responsive":true,
             "paging":true,
+			language: {
+				url: '../public/vendor/datatables/js/language.json',
+				"paginate": {
+					"previous": "<",
+					"next": ">",
+					"first": "",
+					"last": ""
+				}
+			},
+			"info":( fonction === 'administrateur') ? true : false, // Désactive l'affichage du nombre d'éléments
+			"lengthChange": ( fonction === 'administrateur') ? true : false, // Désactive la pagination
+			"pageLength": ( fonction === 'administrateur') ? 10 : 50, // Définit le nombre d'éléments par page
         });
 
         $(document).on('click', '.inscription_eleve', function(){
@@ -575,7 +638,6 @@ $elevR = Eleve::afficherCoursExpireReinscription($eleves);
             $('#eleve_id_reinscrire').val(eleve_id);
       
         });
-
 
         $('#agence_select').change(function () {
            window.location.href="index.php?page=eleve&agence="+$(this).val();
@@ -685,7 +747,4 @@ $elevR = Eleve::afficherCoursExpireReinscription($eleves);
             });
         });
     });
-
-
-
 </script>
