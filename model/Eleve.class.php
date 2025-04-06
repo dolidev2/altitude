@@ -585,8 +585,6 @@ include_once "Reinscription.php";
         $sup = $con->prepare('DELETE FROM program WHERE eleve=?');
         $sup->execute(array($id));
 
-        $sup = $con->prepare('DELETE FROM bordereau WHERE eleve=?');
-        $sup->execute(array($id));
         $sup = $con->prepare('DELETE FROM examen_eleve WHERE eleve=?');
         $sup->execute(array($id));
 

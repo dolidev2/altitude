@@ -472,9 +472,9 @@ $elevR = Eleve::afficherCoursExpireReinscription($eleves);
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         Liste des élèves à réinscrire
-                        <a href="index.php?page=ajouter">
-                            <button class="btn btn-primary">Ajouter</button>
-                        </a>
+<!--                        <a href="index.php?page=ajouter">-->
+<!--                            <button class="btn btn-primary">Ajouter</button>-->
+<!--                        </a>-->
                     </div>
                     <div class="panel-body">
                         <table width="100%" class="table table-striped table-bordered table-hover" id="tables-reinscrire">
@@ -658,18 +658,31 @@ $elevR = Eleve::afficherCoursExpireReinscription($eleves);
         //Submit form Boredereau
         $('#formBordereau').submit(function () {
 
+			var $form = $(this);
+			if ($form.data('submitting')) return false;
+			$form.data('submitting', true);
+			$form.find('button[type="submit"]').prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Envoi...');
+
             var depot = $('#date_depot').val();
             var desc_depot = $('#desc_depot').val();
             $.post('../control/bordereau.php', {data:data,depot:depot,desc_depot:desc_depot}, function(response)
             {
               window.location.href = "index.php?page=eleve";
-            });
+            })always(function() {
+				$form.data('submitting', false);
+				$form.find('button[type="submit"]').prop('disabled', false).html('Enregistrer');
+			});
 
             return false;
         });
         // Save User
         $('#formulaire_save').submit( function()
         {
+			var $form = $(this);
+			if ($form.data('submitting')) return false;
+			$form.data('submitting', true);
+			$form.find('button[type="submit"]').prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Envoi...');
+
             var nom = $('#nom_save').val();
             var prenom = $('#prenom_save').val();
             var contact = $('#contact_save').val();
@@ -693,14 +706,19 @@ $elevR = Eleve::afficherCoursExpireReinscription($eleves);
                 forfait:forfait,solde:solde,sexe:sexe,recommandation:recommandation,agence:agence,montant:montant}, function(response)
             {
                 $('#comment').html(response);
-            });
+				// Vider le formulaire après succès
+				document.getElementById('formulaire_save').reset(); // Méthode native
+            }).always(function() {
+				$form.data('submitting', false);
+				$form.find('button[type="submit"]').prop('disabled', false).html('Ajouter');
+			});
 
             return false;
 
         });
 
         $(document).on('click', '.delete_eleve', function(){
-        var eleve_id = $(this).attr("id");
+			var eleve_id = $(this).attr("id");
             if (confirm("Êtes vous sûr de vouloir supprimer cet élève?")){
                 $.ajax({
                 url:"../control/del_eleve.php",
@@ -708,11 +726,10 @@ $elevR = Eleve::afficherCoursExpireReinscription($eleves);
                 data:{eleve_id:eleve_id},
                 success:function(data)
                 {
-                    dataTable.ajax.reload();
-                    dataTables.ajax.reload();
+					location.reload();
                 }
             });
-              
+
             } else {
                 return false;
             }

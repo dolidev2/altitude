@@ -933,7 +933,13 @@ $elev = Eleve::afficherCoursExpire($reds);
         // Save User
         $('#formulaire_examen').submit( function()
         {
-            var date = $('#date').val();
+
+			var $form = $(this);
+			if ($form.data('submitting')) return false;
+			$form.data('submitting', true);
+			$form.find('button[type="submit"]').prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Envoi...');
+
+			var date = $('#date').val();
             var sites = $('#sit').val();
             var desc_examen = $('#desc_examen').val();
             var examinateur = '';
@@ -943,23 +949,31 @@ $elev = Eleve::afficherCoursExpire($reds);
             {
                 $('#comment').html(response);
                 window.location.href = "index.php?page=examen";
-            });
+            }).always(function() {
+				$form.data('submitting', false);
+				$form.find('button[type="submit"]').prop('disabled', false).html('Ajouter');
+			});
             return false;
         });
 
         $('#formulaire_site').submit( function()
         {
-            var nom = $('#site').val();
+			var $form = $(this);
+			if ($form.data('submitting')) return false;
+			$form.data('submitting', true);
+			$form.find('button[type="submit"]').prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Envoi...');
+
+			var nom = $('#site').val();
 
             $.post('../control/reg_site.php', {nom:nom}, function(response)
             {
                 $('#comment').html(response);
-                window.location.href = "index.php?page=examen";
-            });
-
-
+             	location.reload();
+            }).always(function() {
+				$form.data('submitting', false);
+				$form.find('button[type="submit"]').prop('disabled', false).html('Ajouter');
+			});
             return false;
-
         });
     });
 

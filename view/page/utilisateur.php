@@ -47,9 +47,9 @@
                                     <div class="form-group">
                                         <label>Fonction</label>
                                         <select id="fonction_save" class="form-control" required>
-                                           <option value="administrateur">administrateur</option>
                                            <option value="secretaire">secretaire</option>
-                                           <option value="gerant">gérant</option>                            
+                                           <option value="manager">gérant</option>
+											<option value="administrateur">administrateur</option>
                                         </select>
                                     </div>           
 
@@ -149,7 +149,13 @@
     // Save User 
     $('#formulaire_save').submit( function()
         {
-              var nom = $('#nom_save').val();
+			var $form = $(this);
+			if ($form.data('submitting')) return false;
+			$form.data('submitting', true);
+			$form.find('button[type="submit"]').prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Envoi...');
+
+
+			var nom = $('#nom_save').val();
               var prenom = $('#prenom_save').val();
               var username = $('#username_save').val();
               var fonction = $('#fonction_save').val();
@@ -165,8 +171,12 @@
                     $('#password_save').val('');
                     $('#rpassword_save').val('');
 
-                    $('#comment').html(response);                   
-                });
+                    $('#comment').html(response);
+
+                }).always(function() {
+					$form.data('submitting', false);
+					$form.find('button[type="submit"]').prop('disabled', false).html('Ajouter');
+				});
 
               }
               else
