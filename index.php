@@ -9,7 +9,7 @@
 
     <title>Connexion</title>
     <!--Favicon-->
-    <link rel="shortcut icon" type="image/x-icon" href="public/particles/logo.png">
+    <link rel="shortcut icon" type="image/x-icon" href="public/particles/logo.jpg">
 
 
     <link rel="stylesheet" type="text/css" href="public/sweat_allert/sweetalert.css" media="screen" />
