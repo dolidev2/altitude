@@ -857,44 +857,134 @@ $elev = Eleve::afficherCoursExpire($reds);
         var table_exam_codes = $('#table-exam-codes').DataTable({
             "responsive":true,
             "paging":true,
+			language: {
+				url: '../public/vendor/datatables/js/language.json',
+				"paginate": {
+					"previous": "<",
+					"next": ">",
+					"first": "",
+					"last": ""
+				}
+			},
         });
 
         var table_exam_pl_0= $('#table-exam-pl-0').DataTable({
             "responsive":true,
             "paging":true,
+			language: {
+				url: '../public/vendor/datatables/js/language.json',
+				"paginate": {
+					"previous": "<",
+					"next": ">",
+					"first": "",
+					"last": ""
+				}
+			},
         });
         var table_exam_pl_1= $('#table-exam-pl-1').DataTable({
             "responsive":true,
             "paging":true,
+			language: {
+				url: '../public/vendor/datatables/js/language.json',
+				"paginate": {
+					"previous": "<",
+					"next": ">",
+					"first": "",
+					"last": ""
+				}
+			},
         });
         var table_exam_pl_2= $('#table-exam-pl-2').DataTable({
             "responsive":true,
             "paging":true,
+			language: {
+				url: '../public/vendor/datatables/js/language.json',
+				"paginate": {
+					"previous": "<",
+					"next": ">",
+					"first": "",
+					"last": ""
+				}
+			},
         });
         var table_exam_pl_3= $('#table-exam-pl-3').DataTable({
             "responsive":true,
             "paging":true,
+			language: {
+				url: '../public/vendor/datatables/js/language.json',
+				"paginate": {
+					"previous": "<",
+					"next": ">",
+					"first": "",
+					"last": ""
+				}
+			},
         });
 
         var table_exam_pls_0= $('#table-exam-pls-0').DataTable({
             "responsive":true,
             "paging":true,
+			language: {
+				url: '../public/vendor/datatables/js/language.json',
+				"paginate": {
+					"previous": "<",
+					"next": ">",
+					"first": "",
+					"last": ""
+				}
+			},
         });
         var table_exam_pls_1= $('#table-exam-pls-1').DataTable({
             "responsive":true,
             "paging":true,
+			language: {
+				url: '../public/vendor/datatables/js/language.json',
+				"paginate": {
+					"previous": "<",
+					"next": ">",
+					"first": "",
+					"last": ""
+				}
+			},
         });
         var table_exam_pls_2= $('#table-exam-pls-2').DataTable({
             "responsive":true,
             "paging":true,
+			language: {
+				url: '../public/vendor/datatables/js/language.json',
+				"paginate": {
+					"previous": "<",
+					"next": ">",
+					"first": "",
+					"last": ""
+				}
+			},
         });
         var table_exam_pls_3= $('#table-exam-pls-3').DataTable({
             "responsive":true,
             "paging":true,
+			language: {
+				url: '../public/vendor/datatables/js/language.json',
+				"paginate": {
+					"previous": "<",
+					"next": ">",
+					"first": "",
+					"last": ""
+				}
+			},
         });
         var table_exam_code = $('#table-exam-code').DataTable({
             "responsive":true,
             "paging":true,
+			language: {
+				url: '../public/vendor/datatables/js/language.json',
+				"paginate": {
+					"previous": "<",
+					"next": ">",
+					"first": "",
+					"last": ""
+				}
+			},
         });
 
         $('#agence_select').change(function () {
@@ -934,6 +1024,7 @@ $elev = Eleve::afficherCoursExpire($reds);
         $('#formulaire_examen').submit( function()
         {
 
+
 			var $form = $(this);
 			if ($form.data('submitting')) return false;
 			$form.data('submitting', true);
@@ -948,8 +1039,10 @@ $elev = Eleve::afficherCoursExpire($reds);
             $.post('../control/reg_examen.php', {date:date,examinateur:examinateur,type:type_examen,sites:sites,desc_examen:desc_examen}, function(response)
             {
                 $('#comment').html(response);
-                window.location.href = "index.php?page=examen";
-            }).always(function() {
+
+               location.reload();
+			}).always(function() {
+
 				$form.data('submitting', false);
 				$form.find('button[type="submit"]').prop('disabled', false).html('Ajouter');
 			});
@@ -968,11 +1061,13 @@ $elev = Eleve::afficherCoursExpire($reds);
             $.post('../control/reg_site.php', {nom:nom}, function(response)
             {
                 $('#comment').html(response);
+
              	location.reload();
             }).always(function() {
 				$form.data('submitting', false);
 				$form.find('button[type="submit"]').prop('disabled', false).html('Ajouter');
 			});
+
             return false;
         });
     });

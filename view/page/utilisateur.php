@@ -149,11 +149,11 @@
     // Save User 
     $('#formulaire_save').submit( function()
         {
+
 			var $form = $(this);
 			if ($form.data('submitting')) return false;
 			$form.data('submitting', true);
 			$form.find('button[type="submit"]').prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Envoi...');
-
 
 			var nom = $('#nom_save').val();
               var prenom = $('#prenom_save').val();
@@ -173,7 +173,7 @@
 
                     $('#comment').html(response);
 
-                }).always(function() {
+				}).always(function() {
 					$form.data('submitting', false);
 					$form.find('button[type="submit"]').prop('disabled', false).html('Ajouter');
 				});

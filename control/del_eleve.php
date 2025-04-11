@@ -3,7 +3,8 @@ session_start();
 	include_once '../model/Eleve.class.php';
 	include_once '../model/Audit.class.php';
 
-	if ( isset($_POST['eleve_id']))
+	if ( isset($_POST['eleve_id']) )
+
 	{
         $eleve = Eleve::afficherOne($_POST['eleve_id']);
         $desc_audit = 'suppression de '.$eleve[0]->nom.' '.$eleve[0]->prenom.
@@ -17,6 +18,7 @@ session_start();
         Audit::register($data_audit);
 		Eleve::supprimer($_POST['eleve_id']);
 
+		header('location:../view/index.php?page=eleve');
 	}
 	else
 	{

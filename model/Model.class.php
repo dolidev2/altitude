@@ -17,15 +17,16 @@
      * le tableau dans lequel vont se greffer les données de config de la base de données
      */
     public static $data = array(
-        'DB_HOST'=> 'localhost',
-        'DB_NAME'=> 'altitude',
-        'DB_USER'=> 'admin',
-        'DB_PASSWORD'=>'Cravates123',
-        'DB_PORT'=>'',
-        'DB_PREFIX'=>'',
-        'DB_DSN'=> 'mysql:host=localhost;dbname=auto_ecole_altitude'
 
-    );
+            'DB_HOST'=> 'localhost',
+            'DB_NAME'=> 'nob',
+            'DB_USER'=> 'jean',
+            'DB_PASSWORD'=>'',
+            'DB_PORT'=>'',
+            'DB_PREFIX'=>'',
+            'DB_DSN'=> 'mysql:host=localhost;dbname=altitude'
+            );
+
     public static $pdo;
 
  	/* 
