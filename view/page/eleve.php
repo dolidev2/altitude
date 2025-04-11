@@ -472,9 +472,6 @@ $elevR = Eleve::afficherCoursExpireReinscription($eleves);
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         Liste des élèves à réinscrire
-                        <a href="index.php?page=ajouter">
-                            <button class="btn btn-primary">Ajouter</button>
-                        </a>
                     </div>
                     <div class="panel-body">
                         <table width="100%" class="table table-striped table-bordered table-hover" id="tables-reinscrire">
@@ -564,7 +561,7 @@ $elevR = Eleve::afficherCoursExpireReinscription($eleves);
 
         var dataTable = $('#course_table').DataTable({
             "responsive":true,
-            "paging":true,
+            "paging": true,
 			language: {
 				url: '../public/vendor/datatables/js/language.json',
 				"paginate": {
@@ -574,9 +571,9 @@ $elevR = Eleve::afficherCoursExpireReinscription($eleves);
 					"last": ""
 				}
 			},
-			"info":( fonction === 'administrateur') ? true : false, // Désactive l'affichage du nombre d'éléments
-			"lengthChange": ( fonction === 'administrateur') ? true : false, // Désactive la pagination
-			"pageLength": ( fonction === 'administrateur') ? 10 : 50, // Définit le nombre d'éléments par page
+			"info":( fonction === 'administrateur' || fonction === 'manager') ? true : false, // Désactive l'affichage du nombre d'éléments
+			"lengthChange": ( fonction === 'administrateur' || fonction === 'manager') ? true : false, // Désactive la pagination
+			"pageLength": ( fonction === 'administrateur' || fonction === 'manager') ? 10 : 50, // Définit le nombre d'éléments par page
         });
 
         var dataTable_provisoire = $('#table_provisoire').DataTable({
@@ -591,9 +588,9 @@ $elevR = Eleve::afficherCoursExpireReinscription($eleves);
 					"last": ""
 				}
 			},
-			"info":( fonction === 'administrateur') ? true : false, // Désactive l'affichage du nombre d'éléments
-			"lengthChange": ( fonction === 'administrateur') ? true : false, // Désactive la pagination
-			"pageLength": ( fonction === 'administrateur') ? 10 : 50, // Définit le nombre d'éléments par page
+			"info":( fonction === 'administrateur' || fonction === 'manager') ? true : false, // Désactive l'affichage du nombre d'éléments
+			"lengthChange": ( fonction === 'administrateur' || fonction === 'manager') ? true : false, // Désactive la pagination
+			"pageLength": ( fonction === 'administrateur' || fonction === 'manager') ? 10 : 50, // Définit le nombre d'éléments par page
         });
 
         var table_depot = $('#table-depot').DataTable({
@@ -609,9 +606,9 @@ $elevR = Eleve::afficherCoursExpireReinscription($eleves);
 					"last": ""
 				}
 			},
-			"info":( fonction === 'administrateur') ? true : false, // Désactive l'affichage du nombre d'éléments
-			"lengthChange": ( fonction === 'administrateur') ? true : false, // Désactive la pagination
-			"pageLength": ( fonction === 'administrateur') ? 10 : 50, // Définit le nombre d'éléments par page
+			"info":( fonction === 'administrateur' || fonction === 'manager') ? true : false, // Désactive l'affichage du nombre d'éléments
+			"lengthChange": ( fonction === 'administrateur' || fonction === 'manager') ? true : false, // Désactive la pagination
+			"pageLength": ( fonction === 'administrateur' || fonction === 'manager') ? 10 : 50, // Définit le nombre d'éléments par page
 
         });
 
@@ -627,9 +624,9 @@ $elevR = Eleve::afficherCoursExpireReinscription($eleves);
 					"last": ""
 				}
 			},
-			"info":( fonction === 'administrateur') ? true : false, // Désactive l'affichage du nombre d'éléments
-			"lengthChange": ( fonction === 'administrateur') ? true : false, // Désactive la pagination
-			"pageLength": ( fonction === 'administrateur') ? 10 : 50, // Définit le nombre d'éléments par page
+			"info":( fonction === 'administrateur' || fonction === 'manager') ? true : false, // Désactive l'affichage du nombre d'éléments
+			"lengthChange": ( fonction === 'administrateur' || fonction === 'manager') ? true : false, // Désactive la pagination
+			"pageLength": ( fonction === 'administrateur' || fonction === 'manager') ? 10 : 50, // Définit le nombre d'éléments par page
         });
 
         $(document).on('click', '.inscription_eleve', function(){
@@ -657,19 +654,31 @@ $elevR = Eleve::afficherCoursExpireReinscription($eleves);
 
         //Submit form Boredereau
         $('#formBordereau').submit(function () {
+			var $form = $(this);
+			if ($form.data('submitting')) return false;
+			$form.data('submitting', true);
+			$form.find('button[type="submit"]').prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Envoi...');
 
-            var depot = $('#date_depot').val();
+			var depot = $('#date_depot').val();
             var desc_depot = $('#desc_depot').val();
             $.post('../control/bordereau.php', {data:data,depot:depot,desc_depot:desc_depot}, function(response)
             {
-              window.location.href = "index.php?page=eleve";
-            });
+              location.reload();
+			}).always(function() {
+				$form.data('submitting', false);
+				$form.find('button[type="submit"]').prop('disabled', false).html('Ajouter');
+			});
 
             return false;
         });
         // Save User
         $('#formulaire_save').submit( function()
         {
+			var $form = $(this);
+			if ($form.data('submitting')) return false;
+			$form.data('submitting', true);
+			$form.find('button[type="submit"]').prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Envoi...');
+
             var nom = $('#nom_save').val();
             var prenom = $('#prenom_save').val();
             var contact = $('#contact_save').val();
@@ -693,7 +702,10 @@ $elevR = Eleve::afficherCoursExpireReinscription($eleves);
                 forfait:forfait,solde:solde,sexe:sexe,recommandation:recommandation,agence:agence,montant:montant}, function(response)
             {
                 $('#comment').html(response);
-            });
+			}).always(function() {
+			$form.data('submitting', false);
+			$form.find('button[type="submit"]').prop('disabled', false).html('Ajouter');
+		});
 
             return false;
 
@@ -708,8 +720,7 @@ $elevR = Eleve::afficherCoursExpireReinscription($eleves);
                 data:{eleve_id:eleve_id},
                 success:function(data)
                 {
-                    dataTable.ajax.reload();
-                    dataTables.ajax.reload();
+					location.reload();
                 }
             });
               

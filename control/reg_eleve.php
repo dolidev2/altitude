@@ -43,7 +43,7 @@ session_start();
 		//Generate matricule ID
 		$y = date('Y');
 		$nomb = Eleve::countFromYear();
-		$matricule = $y.'NBS'.$nomb[0]->nombre;
+		$matricule = $y.'LTD'.$nomb[0]->nombre;
 
 		$data = array(
 			'nom' => $nom,

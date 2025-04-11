@@ -23,7 +23,7 @@
             'DB_PASSWORD'=>'',
             'DB_PORT'=>'',
             'DB_PREFIX'=>'',
-            'DB_DSN'=> 'mysql:host=localhost;dbname=auto_ecole_noblesse'
+            'DB_DSN'=> 'mysql:host=localhost;dbname=altitude'
                         );
     public static $pdo;
 
